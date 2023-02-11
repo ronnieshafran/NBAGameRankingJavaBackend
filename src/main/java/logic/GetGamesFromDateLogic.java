@@ -15,7 +15,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class GetTodaysGamesLogic {
+public class GetGamesFromDateLogic {
     public static List<GameData> getGamesFromDate(String date, LambdaLogger logger, Gson gson) {
         // get games from the date mentioned that started before 5 and are finished
         // and the games from the date before and started after 3 and are finished

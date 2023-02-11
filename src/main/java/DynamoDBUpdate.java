@@ -10,7 +10,7 @@ import utils.DateUtils;
 import java.util.List;
 import java.util.Map;
 
-import static logic.GetTodaysGamesLogic.getGamesFromDate;
+import static logic.GetGamesFromDateLogic.getGamesFromDate;
 
 
 public class DynamoDBUpdate {
@@ -33,6 +33,8 @@ public class DynamoDBUpdate {
         List<GameData> todaysGames = getGamesFromDate(todaysDate, logger, gson);
 
         // for each game: call gameDetails and gameStatistics and get the needed details
+        todaysGames.forEach(gameData -> fillGameData(gameData));
+
         // upload all games to DDB
 
 //        String date = event.get("date");
@@ -43,7 +45,9 @@ public class DynamoDBUpdate {
 //        table.putItem(item);
     }
 
+    private void fillGameData(GameData gameData) {
 
+    }
 
 
 }
