@@ -30,19 +30,27 @@ public class GetGameStatisticsLogic {
 
         gameData.setDuel(!hTeamSpecialPerformers.isEmpty() && !vTeamSpecialPerformers.isEmpty());
         gameData.setSpecialPerformance(!hTeamSpecialPerformers.isEmpty() || !vTeamSpecialPerformers.isEmpty());
-        gameData.setInjuredPlayers(getInjuredPlayers(stats, gameData, logger));
+        gameData.setInjuredPlayers(getInjuredPlayers(stats, gameData, logger, gson));
 
     }
 
-    private static List<String> getInjuredPlayers(final List<Statistic> stats, final GameData gameData, final LambdaLogger logger) {
-        List<Statistic> stars =
-                stats.stream().filter(statistic -> isStarPlayer(statistic, gameData)).collect(Collectors.toList());
-        List<Statistic> injuredStars = stars.stream().filter(GetGameStatisticsLogic::wasInjured).collect(Collectors.toList());
-        List<String> injuredStarsNames = injuredStars.stream().map(GetGameStatisticsLogic::getStarName).collect(Collectors.toList());
-        if (injuredStarsNames.stream().anyMatch(String::isEmpty)) {
+    private static List<String> getInjuredPlayers(final List<Statistic> stats, final GameData gameData, final LambdaLogger logger,
+                                                  final Gson gson) {
+        List<Star> expectedStars = StarsProvider.getStarsForTeams(gameData.getHomeTeamId(), gameData.getAwayTeamId());
+        List<String> stars = stats.stream()
+                .filter(statistic -> isStarPlayer(statistic, gameData))
+                .filter(GetGameStatisticsLogic::playedMoreThan10Minutes)
+                .map(GetGameStatisticsLogic::getStarName)
+                .collect(Collectors.toList());
+        List<String> injuredStars = expectedStars.stream()
+                .map(Star::getName)
+                .filter(star -> !stars.contains(star))
+                .collect(Collectors.toList());
+        injuredStars.forEach(star -> logger.log("Injured Star Found: " + star));
+        if (injuredStars.stream().anyMatch(String::isEmpty)) {
             logger.log("Empty Star Name In Game: " + gameData.getId());
         }
-        return injuredStarsNames;
+        return injuredStars;
     }
 
     private static String getStarName(Statistic starStats) {
@@ -58,8 +66,8 @@ public class GetGameStatisticsLogic {
 
     }
 
-    private static boolean wasInjured(final Statistic statistic) {
-        return Integer.parseInt(statistic.getMin()) <= 5;
+    private static boolean playedMoreThan10Minutes(final Statistic statistic) {
+        return Integer.parseInt(statistic.getMin()) >= 10;
     }
 
     private static boolean isStarPlayer(final Statistic statistic, final GameData gameData) {

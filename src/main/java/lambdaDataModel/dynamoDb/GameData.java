@@ -14,10 +14,8 @@ public class GameData {
     String id;
     String homeTeamId;
     int homeTeamScore;
-    int homeTeamScoreAfter3;
     String awayTeamId;
     int awayTeamScore;
-    int awayTeamScoreAfter3;
     Map<String, String> homeTeam;
     Map<String, String> awayTeam;
     List<String> injuredPlayers;

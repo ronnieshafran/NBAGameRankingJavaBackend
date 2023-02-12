@@ -10,6 +10,8 @@ import utils.DateUtils;
 import java.util.List;
 import java.util.Map;
 
+import static logic.GetGameDetailsLogic.fillGameDataWithGameDetails;
+import static logic.GetGameStatisticsLogic.fillGameDataWithGameStatistics;
 import static logic.GetGamesFromDateLogic.getGamesFromDate;
 
 
@@ -33,7 +35,8 @@ public class DynamoDBUpdate {
         List<GameData> todaysGames = getGamesFromDate(todaysDate, logger, gson);
 
         // for each game: call gameDetails and gameStatistics and get the needed details
-        todaysGames.forEach(gameData -> fillGameData(gameData));
+        todaysGames.forEach(gameData -> fillGameData(gameData, logger, gson));
+        todaysGames.forEach(gameData -> logGameData(gameData, logger, gson));
 
         // upload all games to DDB
 
@@ -45,8 +48,15 @@ public class DynamoDBUpdate {
 //        table.putItem(item);
     }
 
-    private void fillGameData(GameData gameData) {
+    private void logGameData(GameData gameData, LambdaLogger logger, Gson gson) {
+        final String gameDataJson = gson.toJson(gameData);
+        final String message = String.format("Game Data for %s:\n%s", gameData.getId(), gameDataJson);
+        logger.log(message);
+    }
 
+    private void fillGameData(GameData gameData, LambdaLogger logger, Gson gson) {
+        fillGameDataWithGameDetails(gameData, logger, gson);
+        fillGameDataWithGameStatistics(gameData, logger, gson);
     }
 
 
