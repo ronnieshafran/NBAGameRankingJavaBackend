@@ -11,7 +11,7 @@ import java.util.Optional;
 public class RapidAPIClient {
 
     public static final String X_RAPID_API_KEY_HEADER = "X-RapidAPI-Key";
-    public static final String X_RAPI_API_KEY = "74a31071eamshe7387c3260e4bfbp1dc7b3jsnbf43416ee3df";
+    public static final String X_RAPID_API_KEY = System.getenv("API_KEY");;
     public static final String X_RAPID_API_HOST_HEADER = "X-RapidAPI-Host";
     public static final String X_RAPID_API_HOST = "api-nba-v1.p.rapidapi.com";
     public static final String NBA_API_URL = "https://api-nba-v1.p.rapidapi.com";
@@ -38,7 +38,7 @@ public class RapidAPIClient {
     private static HttpRequest buildGetRequest(final String param, final String endpoint) {
         return HttpRequest.newBuilder()
                           .uri(URI.create(endpoint + param))
-                          .header(X_RAPID_API_KEY_HEADER, X_RAPI_API_KEY)
+                          .header(X_RAPID_API_KEY_HEADER, X_RAPID_API_KEY)
                           .header(X_RAPID_API_HOST_HEADER, X_RAPID_API_HOST)
                           .method("GET", HttpRequest.BodyPublishers.noBody())
                           .build();
