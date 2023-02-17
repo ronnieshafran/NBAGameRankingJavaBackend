@@ -33,6 +33,16 @@ public class DynamoDBUpdate {
         dynamoDB = new DynamoDB(dynamoDBClient);
     }
 
+
+    // Lambda handler
+    public void backfillGames(Map<String, String> event, Context context) {
+        final LambdaLogger logger = context.getLogger();
+        final List<String> dates = DateUtils.getDatesFromBeginningOf2023();
+        dates.forEach(date -> writeGamesFromDate(date, logger));
+    }
+
+
+    // Lambda handler
     public void updateDynamoDB(Map<String, String> event, Context context) {
         final LambdaLogger logger = context.getLogger();
         String date = event.getOrDefault("date", DateUtils.getTodayDate());
@@ -40,6 +50,10 @@ public class DynamoDBUpdate {
             date = DateUtils.getTodayDate();
         }
 
+        writeGamesFromDate(date, logger);
+    }
+
+    private void writeGamesFromDate(final String date, final LambdaLogger logger) {
         // get games from desired date
         final List<GameData> games = getGamesFromDate(date, logger, gson);
         if (games.isEmpty()) {
@@ -56,6 +70,7 @@ public class DynamoDBUpdate {
         final TableWriteItems gameItemsToWrite = new TableWriteItems(GAMES_TABLE_NAME);
         writeItemsToDynamoDB(logger, games, table, gameItemsToWrite);
     }
+
     private void fillGameData(GameData gameData, LambdaLogger logger, Gson gson) {
         fillGameDataWithGameDetails(gameData, logger, gson);
         fillGameDataWithGameStatistics(gameData, logger, gson);
