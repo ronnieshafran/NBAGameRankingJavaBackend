@@ -14,7 +14,8 @@ public class DateUtils {
     }
 
     public static String getYesterdaysDate() {
-        LocalDate yesterday = LocalDate.now().minusDays(1);
+        LocalDate yesterday = LocalDate.now()
+                                       .minusDays(1);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return yesterday.format(formatter);
     }

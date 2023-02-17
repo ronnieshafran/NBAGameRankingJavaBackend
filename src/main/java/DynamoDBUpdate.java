@@ -1,6 +1,7 @@
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
+import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.google.gson.Gson;
@@ -19,7 +20,7 @@ public class DynamoDBUpdate {
 
     private final Gson gson;
     private final DynamoDB dynamoDB;
-    private static final String TABLE_NAME = "gameIds";
+    private static final String TABLE_NAME = "Games";
 
     public DynamoDBUpdate() {
         gson = new Gson();
@@ -39,13 +40,10 @@ public class DynamoDBUpdate {
         todaysGames.forEach(gameData -> logGameData(gameData, logger, gson));
 
         // upload all games to DDB
-
-//        String date = event.get("date");
-//        logger.log("logged event date " + date);
-//        Table table = dynamoDB.getTable(TABLE_NAME);
-//        Item item = new Item()
-//                .withPrimaryKey("gameIds", "gameId");
-//        table.putItem(item);
+        Table table = dynamoDB.getTable(TABLE_NAME);
+        todaysGames.stream()
+                   .map(GameData::toDdbItem)
+                   .forEach(table::putItem);
     }
 
     private void logGameData(GameData gameData, LambdaLogger logger, Gson gson) {

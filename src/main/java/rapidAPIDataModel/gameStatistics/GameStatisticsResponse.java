@@ -1,4 +1,3 @@
-
 package rapidAPIDataModel.gameStatistics;
 
 import com.google.gson.annotations.Expose;

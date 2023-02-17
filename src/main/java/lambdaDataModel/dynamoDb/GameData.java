@@ -28,18 +28,18 @@ public class GameData {
     boolean isTightD;
 
     public Item toDdbItem() {
-        return new Item().withPrimaryKey("date", date)
-                        .with("GameId", id)
-                        .with("AwayTeam", awayTeam)
-                        .with("HomeTeam", homeTeam)
-                        .with("InjuredPlayers", injuredPlayers)
-                        .with("IsBlowout", isBlowout)
-                        .with("IsBucketFest", isBucketFest)
-                        .with("IsClutch", isClutch)
-                        .with("IsDuel", isDuel)
-                        .with("IsHotGame", isHotGame)
-                        .with("IsSpecialPerformance", isSpecialPerformance)
-                        .with("IsTightD", isTightD);
+        return new Item().withPrimaryKey("Date", date)
+                         .with("GameId", id)
+                         .with("AwayTeam", awayTeam)
+                         .with("HomeTeam", homeTeam)
+                         .with("InjuredPlayers", injuredPlayers)
+                         .with("IsBlowout", isBlowout)
+                         .with("IsBucketFest", isBucketFest)
+                         .with("IsClutch", isClutch)
+                         .with("IsDuel", isDuel)
+                         .with("IsHotGame", isHotGame)
+                         .with("IsSpecialPerformance", isSpecialPerformance)
+                         .with("IsTightD", isTightD);
     }
 
 }

@@ -17,11 +17,18 @@ public class GetGameDetailsLogic {
         if (gameDetailsHttpResponse.isEmpty()) {
             throw new RuntimeException("Failed to reach gameDetails API!");
         }
-        GameDetailsResponse gameDetailsResponse = gson.fromJson(gameDetailsHttpResponse.get().body(), GameDetailsResponse.class);
-        Game game = gameDetailsResponse.getApi().getGame().get(0);
+        GameDetailsResponse gameDetailsResponse = gson.fromJson(gameDetailsHttpResponse.get()
+                                                                                       .body(), GameDetailsResponse.class);
+        Game game = gameDetailsResponse.getApi()
+                                       .getGame()
+                                       .get(0);
         final int marginAfter3 = calculateMarginAfter3(game);
-        int vTeamPoints = Integer.parseInt(game.getVTeam().getScore().getPoints());
-        int hTeamPoints = Integer.parseInt(game.getHTeam().getScore().getPoints());
+        int vTeamPoints = Integer.parseInt(game.getVTeam()
+                                               .getScore()
+                                               .getPoints());
+        int hTeamPoints = Integer.parseInt(game.getHTeam()
+                                               .getScore()
+                                               .getPoints());
         int finalMargin = Math.abs(hTeamPoints - vTeamPoints);
 
         final boolean isSmallMargin = finalMargin <= 5;
@@ -38,19 +45,22 @@ public class GetGameDetailsLogic {
     }
 
 
-
     private static int calculateMarginAfter3(final Game game) {
-        Score hTeamScore = game.getHTeam().getScore();
+        Score hTeamScore = game.getHTeam()
+                               .getScore();
         int hTeamScoreAfter3 = gethTeamScoreAfter3(hTeamScore);
 
-        Score vTeamScore = game.getVTeam().getScore();
+        Score vTeamScore = game.getVTeam()
+                               .getScore();
         int vTeamScoreAfter3 = gethTeamScoreAfter3(vTeamScore);
 
-        return Math.abs(hTeamScoreAfter3-vTeamScoreAfter3);
+        return Math.abs(hTeamScoreAfter3 - vTeamScoreAfter3);
     }
 
     private static int gethTeamScoreAfter3(Score score) {
         int totalScore = Integer.parseInt(score.getPoints());
-        return totalScore - Integer.parseInt(score.getLinescore().get(score.getLinescore().size()-1));
+        return totalScore - Integer.parseInt(score.getLinescore()
+                                                  .get(score.getLinescore()
+                                                            .size() - 1));
     }
 }

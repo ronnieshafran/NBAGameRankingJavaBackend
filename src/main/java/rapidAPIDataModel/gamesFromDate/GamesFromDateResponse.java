@@ -1,4 +1,3 @@
-
 package rapidAPIDataModel.gamesFromDate;
 
 import com.google.gson.annotations.Expose;
