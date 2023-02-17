@@ -4,8 +4,8 @@ import com.amazonaws.services.dynamodbv2.document.Item;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Data
 @Builder
@@ -18,7 +18,7 @@ public class GameData {
     int awayTeamScore;
     Map<String, String> homeTeam;
     Map<String, String> awayTeam;
-    List<String> injuredPlayers;
+    Set<String> injuredPlayers;
     boolean isBlowout;
     boolean isBucketFest;
     boolean isClutch;
@@ -29,17 +29,17 @@ public class GameData {
 
     public Item toDdbItem() {
         return new Item().withPrimaryKey("Date", date)
-                         .with("GameId", id)
-                         .with("AwayTeam", awayTeam)
-                         .with("HomeTeam", homeTeam)
-                         .with("InjuredPlayers", injuredPlayers)
-                         .with("IsBlowout", isBlowout)
-                         .with("IsBucketFest", isBucketFest)
-                         .with("IsClutch", isClutch)
-                         .with("IsDuel", isDuel)
-                         .with("IsHotGame", isHotGame)
-                         .with("IsSpecialPerformance", isSpecialPerformance)
-                         .with("IsTightD", isTightD);
+                         .withString("GameId", id)
+                         .withMap("AwayTeam", awayTeam)
+                         .withMap("HomeTeam", homeTeam)
+                         .withStringSet("InjuredPlayers", injuredPlayers.isEmpty() ? Set.of("") : injuredPlayers)
+                         .withBoolean("IsBlowout", isBlowout)
+                         .withBoolean("IsBucketFest", isBucketFest)
+                         .withBoolean("IsClutch", isClutch)
+                         .withBoolean("IsDuel", isDuel)
+                         .withBoolean("IsHotGame", isHotGame)
+                         .withBoolean("IsSpecialPerformance", isSpecialPerformance)
+                         .withBoolean("IsTightD", isTightD);
     }
 
 }

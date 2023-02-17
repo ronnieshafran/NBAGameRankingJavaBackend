@@ -12,6 +12,7 @@ import rapidAPIDataModel.gameStatistics.Statistic;
 import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class GetGameStatisticsLogic {
@@ -42,20 +43,20 @@ public class GetGameStatisticsLogic {
 
     }
 
-    private static List<String> getInjuredPlayers(final List<Statistic> stats,
-                                                  final GameData gameData,
-                                                  final LambdaLogger logger,
-                                                  final Gson gson) {
-        List<Star> expectedStars = StarsProvider.getStarsForTeams(gameData.getHomeTeamId(), gameData.getAwayTeamId());
-        List<String> stars = stats.stream()
+    private static Set<String> getInjuredPlayers(final List<Statistic> stats,
+                                                 final GameData gameData,
+                                                 final LambdaLogger logger,
+                                                 final Gson gson) {
+        final List<Star> expectedStars = StarsProvider.getStarsForTeams(gameData.getHomeTeamId(), gameData.getAwayTeamId());
+        final List<String> stars = stats.stream()
                                   .filter(statistic -> isStarPlayer(statistic, gameData))
                                   .filter(GetGameStatisticsLogic::playedMoreThan10Minutes)
                                   .map(GetGameStatisticsLogic::getStarName)
                                   .collect(Collectors.toList());
-        List<String> injuredStars = expectedStars.stream()
+        final Set<String> injuredStars = expectedStars.stream()
                                                  .map(Star::getName)
                                                  .filter(star -> !stars.contains(star))
-                                                 .collect(Collectors.toList());
+                                                 .collect(Collectors.toSet());
         injuredStars.forEach(star -> logger.log("Injured Star Found: " + star));
         if (injuredStars.stream()
                         .anyMatch(String::isEmpty)) {
