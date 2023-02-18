@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,22 +42,31 @@ public class DynamoDBGet {
     private final Gson gson = new GsonBuilder().setPrettyPrinting()
                                                .create();
 
+    private final Map<String, String> reponseHeaders =
+            Map.of("Access-Control-Allow-Headers", "x-api-key",
+                   "Access-Control-Allow-Origin", "*",
+                   "Content-Type", "application/json");
+
     public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent event, Context context) {
         final LambdaLogger logger = context.getLogger();
         logger.log(gson.toJson(event));
         final String date = event.getQueryStringParameters()
                                  .get("date");
-        final String apiKey = event.getHeaders().get("X-API-Key");
+        final String apiKey = event.getHeaders()
+                                   .get("x-api-key");
+        logger.log("got api key " + apiKey);
         if (!apiKey.equals(API_KEY)) {
             var response = new APIGatewayProxyResponseEvent().withStatusCode(400)
-                                                                                      .withBody("Invalid API Key");
+                                                             .withHeaders(reponseHeaders)
+                                                             .withBody("Invalid API Key");
             logger.log(gson.toJson(response));
             return response;
 
         }
         if (date == null) {
             var response = new APIGatewayProxyResponseEvent().withStatusCode(400)
-                                                     .withBody("Missing 'date' query parameter");
+                                                             .withHeaders(reponseHeaders)
+                                                             .withBody("Missing 'date' query parameter");
             logger.log(gson.toJson(response));
             return response;
         }
@@ -66,7 +74,8 @@ public class DynamoDBGet {
             DATE_FORMAT.parse(date);
         } catch (ParseException e) {
             var response = new APIGatewayProxyResponseEvent().withStatusCode(400)
-                                                     .withBody("Invalid date format. Expected format: yyyy-MM-dd");
+                                                             .withHeaders(reponseHeaders)
+                                                             .withBody("Invalid date format. Expected format: yyyy-MM-dd");
             logger.log(gson.toJson(response));
             return response;
         }
@@ -80,14 +89,15 @@ public class DynamoDBGet {
             logger.log(responseBody);
         } catch (JsonProcessingException e) {
             var response = new APIGatewayProxyResponseEvent().withStatusCode(500)
-                                                     .withBody("Failed to serialize response\n" + e);
+                                                             .withHeaders(reponseHeaders)
+                                                             .withBody("Failed to serialize response\n" + e);
             logger.log(gson.toJson(response));
             return response;
         }
 
         var response = new APIGatewayProxyResponseEvent().withStatusCode(200)
-                                                 .withHeaders(Collections.singletonMap("Content-Type", "application/json"))
-                                                 .withBody(responseBody);
+                                                         .withHeaders(reponseHeaders)
+                                                         .withBody(responseBody);
         logger.log(gson.toJson(response));
         return response;
     }
@@ -113,15 +123,15 @@ public class DynamoDBGet {
     }
 
     private List<Item> getGamesFromTable(final Context context, final String dateString) {
-        QuerySpec querySpec = new QuerySpec()
-                .withKeyConditionExpression("#date = :dateValue")
-                .withNameMap(new NameMap().with("#date", DATE))
-                .withValueMap(new ValueMap().with(":dateValue", dateString));
+        QuerySpec querySpec = new QuerySpec().withKeyConditionExpression("#date = :dateValue")
+                                             .withNameMap(new NameMap().with("#date", DATE))
+                                             .withValueMap(new ValueMap().with(":dateValue", dateString));
         final Table table = dynamoDB.getTable(GAMES_TABLE_NAME);
         final ItemCollection<QueryOutcome> queriedGameItems = table.query(querySpec);
         final List<Item> games = new ArrayList<>();
         for (final Item item : queriedGameItems) {
-            context.getLogger().log(item.toJSONPretty());
+            context.getLogger()
+                   .log(item.toJSONPretty());
             games.add(item);
         }
         return games;
