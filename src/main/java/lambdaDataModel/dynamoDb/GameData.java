@@ -12,6 +12,10 @@ import java.util.Set;
 public class GameData {
     String date;
     String id;
+    String homeTeamId;
+    int homeTeamScore;
+    String awayTeamId;
+    int awayTeamScore;
     Map<String, String> homeTeam;
     Map<String, String> awayTeam;
     Set<String> injuredPlayers;
