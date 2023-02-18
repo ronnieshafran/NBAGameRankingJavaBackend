@@ -9,6 +9,7 @@ import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
 import com.amazonaws.services.dynamodbv2.document.utils.NameMap;
 import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
 import com.amazonaws.services.lambda.runtime.Context;
+import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -43,23 +44,31 @@ public class DynamoDBGet {
                                                .create();
 
     public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent event, Context context) {
-        context.getLogger().log(gson.toJson(event));
+        final LambdaLogger logger = context.getLogger();
+        logger.log(gson.toJson(event));
         final String date = event.getQueryStringParameters()
                                  .get("date");
         final String apiKey = event.getHeaders().get("X-API-Key");
         if (!apiKey.equals(API_KEY)) {
-            return new APIGatewayProxyResponseEvent().withStatusCode(400)
-                                                     .withBody("Invalid API Key");
+            var response = new APIGatewayProxyResponseEvent().withStatusCode(400)
+                                                                                      .withBody("Invalid API Key");
+            logger.log(gson.toJson(response));
+            return response;
+
         }
         if (date == null) {
-            return new APIGatewayProxyResponseEvent().withStatusCode(400)
+            var response = new APIGatewayProxyResponseEvent().withStatusCode(400)
                                                      .withBody("Missing 'date' query parameter");
+            logger.log(gson.toJson(response));
+            return response;
         }
         try {
             DATE_FORMAT.parse(date);
         } catch (ParseException e) {
-            return new APIGatewayProxyResponseEvent().withStatusCode(400)
+            var response = new APIGatewayProxyResponseEvent().withStatusCode(400)
                                                      .withBody("Invalid date format. Expected format: yyyy-MM-dd");
+            logger.log(gson.toJson(response));
+            return response;
         }
         ObjectMapper mapper = buildObjectMapper();
         Map<String, Object> responseMap = new HashMap<>();
@@ -68,15 +77,19 @@ public class DynamoDBGet {
         String responseBody;
         try {
             responseBody = mapper.writeValueAsString(responseMap);
-            context.getLogger().log(responseBody);
+            logger.log(responseBody);
         } catch (JsonProcessingException e) {
-            return new APIGatewayProxyResponseEvent().withStatusCode(500)
+            var response = new APIGatewayProxyResponseEvent().withStatusCode(500)
                                                      .withBody("Failed to serialize response\n" + e);
+            logger.log(gson.toJson(response));
+            return response;
         }
 
-        return new APIGatewayProxyResponseEvent().withStatusCode(200)
+        var response = new APIGatewayProxyResponseEvent().withStatusCode(200)
                                                  .withHeaders(Collections.singletonMap("Content-Type", "application/json"))
                                                  .withBody(responseBody);
+        logger.log(gson.toJson(response));
+        return response;
     }
 
     private ObjectMapper buildObjectMapper() {
