@@ -22,8 +22,8 @@ import static logic.GetGamesFromDateLogic.getGamesFromDate;
 public class DynamoDBUpdate {
 
     private static final String GAMES_TABLE_NAME = "Games";
-    public static final String DATE = "Date";
-    public static final String GAME_ID = "GameId";
+    public static final String DATE = "date";
+    public static final String GAME_ID = "gameId";
     private final Gson gson;
     private final DynamoDB dynamoDB;
 

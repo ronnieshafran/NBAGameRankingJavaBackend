@@ -32,7 +32,7 @@ import java.util.Map;
 
 public class DynamoDBGet {
     private static final String GAMES_TABLE_NAME = "Games";
-    public static final String DATE = "Date";
+    public static final String DATE = "date";
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
     private final AmazonDynamoDB dynamoDBClient = AmazonDynamoDBClientBuilder.standard()
                                                                              .build();

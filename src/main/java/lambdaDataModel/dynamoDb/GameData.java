@@ -12,10 +12,6 @@ import java.util.Set;
 public class GameData {
     String date;
     String id;
-    String homeTeamId;
-    int homeTeamScore;
-    String awayTeamId;
-    int awayTeamScore;
     Map<String, String> homeTeam;
     Map<String, String> awayTeam;
     Set<String> injuredPlayers;
@@ -26,20 +22,24 @@ public class GameData {
     boolean isHotGame;
     boolean isSpecialPerformance;
     boolean isTightD;
+    int totalScore;
+    int margin;
 
     public Item toDdbItem() {
-        return new Item().withPrimaryKey("Date", date)
-                         .withString("GameId", id)
-                         .withMap("AwayTeam", awayTeam)
-                         .withMap("HomeTeam", homeTeam)
-                         .withStringSet("InjuredPlayers", injuredPlayers.isEmpty() ? Set.of("") : injuredPlayers)
-                         .withBoolean("IsBlowout", isBlowout)
-                         .withBoolean("IsBucketFest", isBucketFest)
-                         .withBoolean("IsClutch", isClutch)
-                         .withBoolean("IsDuel", isDuel)
-                         .withBoolean("IsHotGame", isHotGame)
-                         .withBoolean("IsSpecialPerformance", isSpecialPerformance)
-                         .withBoolean("IsTightD", isTightD);
+        return new Item().withPrimaryKey("date", date)
+                         .withString("gameId", id)
+                         .withMap("awayTeam", awayTeam)
+                         .withMap("homeTeam", homeTeam)
+                         .withStringSet("injuredPlayers", injuredPlayers.isEmpty() ? Set.of("") : injuredPlayers)
+                         .withBoolean("isBlowout", isBlowout)
+                         .withBoolean("isBucketFest", isBucketFest)
+                         .withBoolean("isClutch", isClutch)
+                         .withBoolean("isDuel", isDuel)
+                         .withBoolean("isHotGame", isHotGame)
+                         .withBoolean("isSpecialPerformance", isSpecialPerformance)
+                         .withBoolean("isTightD", isTightD)
+                         .withInt("totalScore", totalScore)
+                         .withInt("margin", margin);
     }
 
 }

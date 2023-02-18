@@ -30,6 +30,7 @@ public class GetGameDetailsLogic {
                                                .getScore()
                                                .getPoints());
         int finalMargin = Math.abs(hTeamPoints - vTeamPoints);
+        final int totalScore = vTeamPoints + hTeamPoints;
 
         final boolean isSmallMargin = finalMargin <= 5;
         final boolean isLargeMargin = finalMargin >= 12;
@@ -41,6 +42,8 @@ public class GetGameDetailsLogic {
         gameData.setBucketFest(isBucketFest);
         gameData.setClutch(isSmallMargin);
         gameData.setTightD(isTightD);
+        gameData.setMargin(finalMargin);
+        gameData.setTotalScore(totalScore);
 
     }
 
