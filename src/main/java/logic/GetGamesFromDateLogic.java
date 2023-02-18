@@ -32,7 +32,7 @@ public class GetGamesFromDateLogic {
         if (gamesFromYeterdayResponse.isEmpty()) {
             throw new RuntimeException("Failed to connect to API!");
         }
-        GamesFromDateResponse yesterdaysResponse = gson.fromJson(gamesFromTodayResponse.get()
+        GamesFromDateResponse yesterdaysResponse = gson.fromJson(gamesFromYeterdayResponse.get()
                                                                                        .body(), GamesFromDateResponse.class);
 
         List<Game> todaysGames = todaysResponse.getApi()
@@ -48,12 +48,11 @@ public class GetGamesFromDateLogic {
                                                    .filter(GameUtils::isGameFinished)
                                                    .filter(GameUtils::gameStartedAfterThree)
                                                    .collect(Collectors.toList());
-
         List<GameData> allGames = Stream.concat(todaysGames.stream(), yesterdaysGames.stream())
                                         .map(GameUtils::toGameData)
                                         .collect(Collectors.toList());
         logger.log("games found: " + allGames.stream()
-                                             .map(GameData::getId)
+                                             .map(GameData::toString)
                                              .collect(Collectors.toList()));
         allGames.forEach(gameData -> gameData.setDate(date));
         return allGames;

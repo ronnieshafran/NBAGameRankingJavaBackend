@@ -10,6 +10,7 @@ import java.util.Set;
 @Data
 @Builder
 public class GameData {
+    public static final String FULL_NAME = "fullName";
     String date;
     String id;
     String homeTeamId;
@@ -44,6 +45,11 @@ public class GameData {
                          .withBoolean("isTightD", isTightD)
                          .withInt("totalScore", totalScore)
                          .withInt("margin", margin);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s: %s vs %s", getId(), getHomeTeam().get(FULL_NAME), getAwayTeam().get(FULL_NAME));
     }
 
 }

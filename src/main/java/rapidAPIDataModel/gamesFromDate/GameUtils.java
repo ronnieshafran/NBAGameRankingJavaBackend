@@ -12,6 +12,12 @@ public class GameUtils {
         return Objects.equals(game.getStatusGame(), "Finished");
     }
 
+    public static String logTimeString(final Game game) {
+        return String.format("%s /// %s vs %s --- start time: %s", game.getStartTimeUTC(),
+                             game.getHTeam().getShortName(),
+                             game.getVTeam().getShortName(), DateUtils.extractHour(game.getStartTimeUTC()));
+    }
+
     public static boolean gameStartedBeforeFive(final Game game) {
         return DateUtils.extractHour(game.getStartTimeUTC()) < 5;
     }
