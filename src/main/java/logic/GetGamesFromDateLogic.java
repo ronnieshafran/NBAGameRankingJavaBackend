@@ -42,7 +42,7 @@ public class GetGamesFromDateLogic {
                                                .filter(GameUtils::gameStartedBeforeFive)
                                                .collect(Collectors.toList());
 
-        List<Game> yesterdaysGames = todaysResponse.getApi()
+        List<Game> yesterdaysGames = yesterdaysResponse.getApi()
                                                    .getGames()
                                                    .stream()
                                                    .filter(GameUtils::isGameFinished)
