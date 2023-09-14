@@ -224,40 +224,45 @@ public class StarsProvider {
                                                        .name("Porzingis")
                                                        .build();
 
+    private static final Star FRANZ_WAGNER = Star.builder()
+            .id("2858")
+            .name("WAGNER")
+            .build();
+
 
     public static final Map<String, List<Star>> TEAM_TO_STARS = new HashMap<>();
 
     static {
-        TEAM_TO_STARS.put("1", List.of(TRAE_YOUNG, DEJOUNTAE_MURRAY)); //Hawks
-        TEAM_TO_STARS.put("2", List.of(JAYSON_TATUM, JAYLEN_BROWN)); //Celtics
-        TEAM_TO_STARS.put("4", List.of()); //Nets
-        TEAM_TO_STARS.put("5", List.of(LAMELO_BALL)); //Nets
-        TEAM_TO_STARS.put("6", List.of(DEMAR_DEROZAN, ZACH_LAVINE)); //Bulls
-        TEAM_TO_STARS.put("7", List.of(DONOVAN_MITCHELL, DARIUS_GARLAND)); //Cavs
-        TEAM_TO_STARS.put("8", List.of(LUKA_DONCIC, KYRIE_IRVING)); //Mavs
-        TEAM_TO_STARS.put("9", List.of(NIKOLA_JOKIC, JAMAL_MURRAY)); //Nuggets
-        TEAM_TO_STARS.put("10", List.of(CADE_CUNNINGHAM)); //Pistons
-        TEAM_TO_STARS.put("11", List.of(STEPH_CURRY, KLAY_THOMPSON, DRAYMOND_GREEN)); //GSW
-        TEAM_TO_STARS.put("14", List.of(JALEN_GREEN)); //Rockets
-        TEAM_TO_STARS.put("15", List.of(TYRESE_HALIBURTON)); //Pacers
-        TEAM_TO_STARS.put("16", List.of(KAWHI_LEONARD, PAUL_GEORGE)); //Clippers
-        TEAM_TO_STARS.put("17", List.of(LEBRON_JAMES, ANTHONY_DAVIS)); //Lakers
-        TEAM_TO_STARS.put("19", List.of(JA_MORANT, JARREN_JACKSON_JR)); //Grizzlies
-        TEAM_TO_STARS.put("20", List.of(JIMMY_BUTLER, BAM_ADEBAYO)); //Heat
-        TEAM_TO_STARS.put("21", List.of(GIANNIS, KHRIS_MIDDLETON, JRUE_HOLIDAY)); //Bucks
-        TEAM_TO_STARS.put("22", List.of(KARL_ANTHONY_TOWNS, ANTHONY_EDWARDS)); //Timberwolves
-        TEAM_TO_STARS.put("23", List.of(CJ_MCCOLLUM, ZION_WILLIAMSON, BRANDON_INGRAM)); //Pelicans
-        TEAM_TO_STARS.put("24", List.of(JULIUS_RANDLE, JALEN_BRUNSON)); //Knicks
-        TEAM_TO_STARS.put("25", List.of(SHAY_GILGOUS_ALEXANDER)); //Thunder
-        TEAM_TO_STARS.put("26", List.of(PAOLO_BANCHERO)); //Magic
-        TEAM_TO_STARS.put("27", List.of(JAMES_HARDEN, JOEL_EMBIID)); //76ers
-        TEAM_TO_STARS.put("28", List.of(KEVIN_DURANT, DEVIN_BOOKER, CHRIS_PAUL)); //Suns
-        TEAM_TO_STARS.put("29", List.of(DAMIAN_LILLARD)); //Blazers
-        TEAM_TO_STARS.put("30", List.of(DEAARON_FOX, DOMANTIS_SABONIS)); //Kings
-        TEAM_TO_STARS.put("31", List.of()); //Spurs
-        TEAM_TO_STARS.put("38", List.of(PASCAL_SIAKAM, FRED_VANVLEET)); //Raptors
-        TEAM_TO_STARS.put("40", List.of(LAURI_MARKKANEN)); //Jazz
-        TEAM_TO_STARS.put("41", List.of(DENI_AVDIJA, BRADLEY_BEAL, KRISTAPS_PORZINGIS)); //Wizards
+        TEAM_TO_STARS.put(Teams.HAWKS_ID, List.of(TRAE_YOUNG, DEJOUNTAE_MURRAY)); //Hawks
+        TEAM_TO_STARS.put(Teams.CELTICES_ID, List.of(JAYSON_TATUM, JAYLEN_BROWN, KRISTAPS_PORZINGIS)); //Celtics
+        TEAM_TO_STARS.put(Teams.NETS_ID, List.of()); //Nets
+        TEAM_TO_STARS.put(Teams.HORNETS_ID, List.of(LAMELO_BALL)); //Nets
+        TEAM_TO_STARS.put(Teams.BULLS_ID, List.of(DEMAR_DEROZAN, ZACH_LAVINE)); //Bulls
+        TEAM_TO_STARS.put(Teams.CAVS_ID, List.of(DONOVAN_MITCHELL, DARIUS_GARLAND)); //Cavs
+        TEAM_TO_STARS.put(Teams.MAVS_ID, List.of(LUKA_DONCIC, KYRIE_IRVING)); //Mavs
+        TEAM_TO_STARS.put(Teams.NUGGETS_ID, List.of(NIKOLA_JOKIC, JAMAL_MURRAY)); //Nuggets
+        TEAM_TO_STARS.put(Teams.PISTONS_ID, List.of(CADE_CUNNINGHAM)); //Pistons
+        TEAM_TO_STARS.put(Teams.WARRIORS_ID, List.of(STEPH_CURRY, KLAY_THOMPSON, DRAYMOND_GREEN)); //GSW
+        TEAM_TO_STARS.put(Teams.ROCKETS_ID, List.of(JALEN_GREEN, FRED_VANVLEET)); //Rockets
+        TEAM_TO_STARS.put(Teams.PACERS_ID, List.of(TYRESE_HALIBURTON)); //Pacers
+        TEAM_TO_STARS.put(Teams.CLIPPERS_ID, List.of(KAWHI_LEONARD, PAUL_GEORGE)); //Clippers
+        TEAM_TO_STARS.put(Teams.LAKERS_ID, List.of(LEBRON_JAMES, ANTHONY_DAVIS)); //Lakers
+        TEAM_TO_STARS.put(Teams.GRIZZLIES_ID, List.of(JA_MORANT, JARREN_JACKSON_JR)); //Grizzlies
+        TEAM_TO_STARS.put(Teams.HEAT_ID, List.of(JIMMY_BUTLER, BAM_ADEBAYO)); //Heat
+        TEAM_TO_STARS.put(Teams.BUCKS_ID, List.of(GIANNIS, KHRIS_MIDDLETON, JRUE_HOLIDAY)); //Bucks
+        TEAM_TO_STARS.put(Teams.WOLVES_ID, List.of(KARL_ANTHONY_TOWNS, ANTHONY_EDWARDS)); //Timberwolves
+        TEAM_TO_STARS.put(Teams.PELICANS_ID, List.of(CJ_MCCOLLUM, ZION_WILLIAMSON, BRANDON_INGRAM)); //Pelicans
+        TEAM_TO_STARS.put(Teams.KNICKS_ID, List.of(JULIUS_RANDLE, JALEN_BRUNSON)); //Knicks
+        TEAM_TO_STARS.put(Teams.THUNDER_ID, List.of(SHAY_GILGOUS_ALEXANDER)); //Thunder
+        TEAM_TO_STARS.put(Teams.MAGIC_ID, List.of(PAOLO_BANCHERO, FRANZ_WAGNER)); //Magic
+        TEAM_TO_STARS.put(Teams.SIXERS_ID, List.of(JAMES_HARDEN, JOEL_EMBIID)); //76ers
+        TEAM_TO_STARS.put(Teams.SUNS_ID, List.of(KEVIN_DURANT, DEVIN_BOOKER, BRADLEY_BEAL)); //Suns
+        TEAM_TO_STARS.put(Teams.BLAZERS_ID, List.of(DAMIAN_LILLARD)); //Blazers
+        TEAM_TO_STARS.put(Teams.KINGS_ID, List.of(DEAARON_FOX, DOMANTIS_SABONIS)); //Kings
+        TEAM_TO_STARS.put(Teams.SPURS_ID, List.of()); //Spurs
+        TEAM_TO_STARS.put(Teams.RAPTORS_ID, List.of(PASCAL_SIAKAM)); //Raptors
+        TEAM_TO_STARS.put(Teams.JAZZ_ID, List.of(LAURI_MARKKANEN)); //Jazz
+        TEAM_TO_STARS.put(Teams.WIZARDS_ID, List.of(DENI_AVDIJA)); //Wizards
     }
 
     public static List<Star> getStarsForTeams(final String homeTeamId, final String awayTeamId) {
