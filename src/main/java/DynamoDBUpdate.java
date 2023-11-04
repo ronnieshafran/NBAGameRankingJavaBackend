@@ -1,10 +1,6 @@
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
-import com.amazonaws.services.dynamodbv2.document.BatchWriteItemOutcome;
-import com.amazonaws.services.dynamodbv2.document.DynamoDB;
-import com.amazonaws.services.dynamodbv2.document.Item;
-import com.amazonaws.services.dynamodbv2.document.Table;
-import com.amazonaws.services.dynamodbv2.document.TableWriteItems;
+import com.amazonaws.services.dynamodbv2.document.*;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.google.gson.Gson;
@@ -61,9 +57,30 @@ public class DynamoDBUpdate {
             return;
         }
 
-        // for each game: call gameDetails and gameStatistics endpoints and get the needed details
-        games.forEach(gameData -> fillGameData(gameData, logger, gson));
-        games.forEach(gameData -> logGameData(gameData, logger, gson));
+        // Rapid API allows for 10 calls in a minute; splitting to chunks to avoid throttling/
+        // Since we make 2 calls for each game, and we initially make a call to get the list of games,
+        // chunk size is set to 4 - the first minute will have 9 calls, and the rest will have up to 8.
+        int chunkSize = 4;
+        int delayInSeconds = 60; // 1 minute delay between chunks
+
+        for (int i = 0; i < games.size(); i += chunkSize) {
+            int end = Math.min(i + chunkSize, games.size());
+            List<GameData> chunk = games.subList(i, end);
+
+            // for each game: call gameDetails and gameStatistics endpoints and get the needed details
+            chunk.forEach(gameData -> {
+                fillGameData(gameData, logger, gson);
+                logGameData(gameData, logger, gson);
+            });
+
+            // Sleep to ensure we don't exceed the rate limit
+            try {
+                Thread.sleep(delayInSeconds * 1000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                logger.log("Error while waiting for rate limit: " + e.getMessage());
+            }
+        }
 
         // upload all games to DDB
         final Table table = dynamoDB.getTable(GAMES_TABLE_NAME);
