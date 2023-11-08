@@ -23,8 +23,15 @@ public class GetGameStatisticsLogic {
         }
         GameStatisticsResponse gameStatisticsResponse = gson.fromJson(gameStatisticsHttpResponse.get()
                                                                                                 .body(), GameStatisticsResponse.class);
-        List<Statistic> stats = gameStatisticsResponse.getApi()
-                                                      .getStatistics();
+        List<Statistic> stats;
+        try {
+            stats = gameStatisticsResponse.getApi()
+                                                          .getStatistics();
+        }
+        catch (NullPointerException npe){
+            logger.log("FAILED REQUEST BODY: " + gson.toJson(gameStatisticsHttpResponse.get().body()));
+            throw npe;
+        }
         List<Statistic> hTeamSpecialPerformers = stats.stream()
                                                       .filter(GetGameStatisticsLogic::isSpecialPerformance)
                                                       .filter(statistic -> statistic.getTeamId()

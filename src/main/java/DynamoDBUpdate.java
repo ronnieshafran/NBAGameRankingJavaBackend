@@ -59,8 +59,7 @@ public class DynamoDBUpdate {
 
         // Rapid API allows for 10 calls in a minute; splitting to chunks to avoid throttling/
         // Since we make 2 calls for each game, and we initially make a call to get the list of games,
-        // chunk size is set to 4 - the first minute will have 9 calls, and the rest will have up to 8.
-        int chunkSize = 4;
+        int chunkSize = 3;
         int delayInSeconds = 60; // 1 minute delay between chunks
 
         for (int i = 0; i < games.size(); i += chunkSize) {

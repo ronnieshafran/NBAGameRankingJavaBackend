@@ -19,9 +19,16 @@ public class GetGameDetailsLogic {
         }
         GameDetailsResponse gameDetailsResponse = gson.fromJson(gameDetailsHttpResponse.get()
                                                                                        .body(), GameDetailsResponse.class);
-        Game game = gameDetailsResponse.getApi()
-                                       .getGame()
-                                       .get(0);
+        Game game;
+        try {
+            game = gameDetailsResponse.getApi()
+                                           .getGame()
+                                           .get(0);
+        }
+        catch (NullPointerException npe){
+            logger.log("FAILED REQUEST BODY: " + gson.toJson(gameDetailsHttpResponse.get().body()));
+            throw npe;
+        }
         final int marginAfter3 = calculateMarginAfter3(game);
         int vTeamPoints = Integer.parseInt(game.getVTeam()
                                                .getScore()
