@@ -183,10 +183,6 @@ public class StarsProvider {
                                                  .id("153")
                                                  .name("KD")
                                                  .build();
-    private static final Star CHRIS_PAUL = Star.builder()
-                                               .id("415")
-                                               .name("CP3")
-                                               .build();
     private static final Star DAMIAN_LILLARD = Star.builder()
                                                    .id("319")
                                                    .name("Dame")
@@ -251,7 +247,7 @@ public class StarsProvider {
         TEAM_TO_STARS.put(Teams.PISTONS_ID, List.of(CADE_CUNNINGHAM)); //Pistons
         TEAM_TO_STARS.put(Teams.WARRIORS_ID, List.of(STEPH_CURRY, KLAY_THOMPSON, DRAYMOND_GREEN)); //GSW
         TEAM_TO_STARS.put(Teams.ROCKETS_ID, List.of(JALEN_GREEN, FRED_VANVLEET)); //Rockets
-        TEAM_TO_STARS.put(Teams.PACERS_ID, List.of(TYRESE_HALIBURTON)); //Pacers
+        TEAM_TO_STARS.put(Teams.PACERS_ID, List.of(TYRESE_HALIBURTON, PASCAL_SIAKAM)); //Pacers
         TEAM_TO_STARS.put(Teams.CLIPPERS_ID, List.of(KAWHI_LEONARD, PAUL_GEORGE, JAMES_HARDEN)); //Clippers
         TEAM_TO_STARS.put(Teams.LAKERS_ID, List.of(LEBRON_JAMES, ANTHONY_DAVIS)); //Lakers
         TEAM_TO_STARS.put(Teams.GRIZZLIES_ID, List.of(JA_MORANT, JARREN_JACKSON_JR)); //Grizzlies
@@ -267,7 +263,7 @@ public class StarsProvider {
         TEAM_TO_STARS.put(Teams.BLAZERS_ID, List.of()); //Blazers
         TEAM_TO_STARS.put(Teams.KINGS_ID, List.of(DEAARON_FOX, DOMANTIS_SABONIS)); //Kings
         TEAM_TO_STARS.put(Teams.SPURS_ID, List.of(VICTOR_WEMBENYAMA)); //Spurs
-        TEAM_TO_STARS.put(Teams.RAPTORS_ID, List.of(PASCAL_SIAKAM)); //Raptors
+        TEAM_TO_STARS.put(Teams.RAPTORS_ID, List.of()); //Raptors
         TEAM_TO_STARS.put(Teams.JAZZ_ID, List.of(LAURI_MARKKANEN)); //Jazz
         TEAM_TO_STARS.put(Teams.WIZARDS_ID, List.of(DENI_AVDIJA)); //Wizards
     }
