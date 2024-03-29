@@ -17,7 +17,6 @@ response_headers = {
 
 def handle_request(event, context):
     print(json.dumps(event))
-
     date = event["queryStringParameters"]["date"]
     print(f'DATE = {date}')
     api_key_header = event['headers'].get('x-api-key')
