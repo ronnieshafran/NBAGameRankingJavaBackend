@@ -1,4 +1,4 @@
-name: Deploy Lambda Function
+name: Deploy Lambda Functions
 
 on:
   push:
@@ -7,15 +7,15 @@ on:
 
 jobs:
   deploy:
-    name: Deploy to AWS Lambda
+    name: Deploy Lambda Functions
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v2
 
       - name: Set up JDK 11
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v2
         with:
           java-version: '11'
           distribution: 'adopt'
@@ -23,8 +23,16 @@ jobs:
       - name: Configure AWS credentials
         run: aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }} && aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }} && aws configure set region us-east-2
 
-      - name: Package Lambda function
+      - name: Package gameIdsUploader Lambda function
         run: mvn package
 
-      - name: Deploy Lambda function
+      - name: Deploy gameIdsUploader Lambda function
         run: aws lambda update-function-code --function-name gameIdsUploader --zip-file fileb://target/gameRanking-1.0-SNAPSHOT.jar
+
+      - name: Package getGamesFromDatePy Lambda function
+        run: |
+          cd src/main/python
+          zip -r getGamesFromDatePy.zip DynamoDBGetPython.py
+
+      - name: Deploy getGamesFromDatePy Lambda function
+        run: aws lambda update-function-code --function-name getGamesFromDatePy --zip-file fileb://src/main/python/getGamesFromDatePy.zip
