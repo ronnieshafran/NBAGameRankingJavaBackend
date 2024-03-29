@@ -19,15 +19,11 @@ jobs:
         with:
           java-version: '11'
 
-      - name: Build Lambda function
+      - name: Configure AWS credentials
+        run: aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }} && aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }} && aws configure set region us-east-2
+
+      - name: Package Lambda function
         run: mvn package
 
-      - name: Deploy to AWS Lambda
-        uses: appleboy/aws-lambda-action@v1
-        with:
-          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          region: us-east-2
-          function_name: gameIdsUploader
-          handler: DynamoDBUpdate::updateDynamoDB
-          zip_file: target/gameRanking-1.0-SNAPSHOT.jar
+      - name: Deploy Lambda function
+        run: aws lambda update-function-code --function-name gameIdsUploader --zip-file fileb://target/gameRanking-1.0-SNAPSHOT.jar
