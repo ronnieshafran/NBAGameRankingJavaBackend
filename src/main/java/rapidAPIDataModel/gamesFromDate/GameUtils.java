@@ -8,6 +8,12 @@ import java.util.Map;
 import java.util.Objects;
 
 public class GameUtils {
+    private static final Map<String, String> TEAMS_WITH_BROKEN_LOGOS_TO_LOGOS = Map.of(
+            "21", "https://cdn.iconscout.com/icon/free/png-512/free-milwaukee-bucks-logo-icon-download-in-svg-png-gif-file-formats--nba-basketball-game-ball-sport-pack-logos-icons-1593219.png?f=webp&w=256",
+            "27", "https://cdn.iconscout.com/icon/free/png-512/free-philidephia-ers-logo-icon-download-in-svg-png-gif-file-formats--nba-basketball-game-ball-pack-logos-icons-1593213.png?f=webp&w=256",
+            "25", "https://upload.wikimedia.org/wikipedia/en/5/5d/Oklahoma_City_Thunder.svg",
+            "20", "https://cdn.iconscout.com/icon/free/png-512/free-miami-heat-logo-icon-download-in-svg-png-gif-file-formats--nba-basketball-game-pack-logos-icons-1593199.png?f=webp&w=256"
+    );
     public static boolean isGameFinished(final Game game) {
         return Objects.equals(game.getStatusGame(), "Finished");
     }
@@ -48,7 +54,7 @@ public class GameUtils {
 
     private static Map<String, String> getRelevantData(HTeam hTeam) {
         Map<String, String> data = new HashMap<>();
-        data.put("logo", hTeam.getLogo());
+        data.put("logo", getWorkingLogo(hTeam.getTeamId(), hTeam.getLogo()));
         data.put("fullName", hTeam.getFullName());
         data.put("shortName", hTeam.getShortName());
         return data;
@@ -56,10 +62,17 @@ public class GameUtils {
 
     private static Map<String, String> getRelevantData(VTeam vTeam) {
         Map<String, String> data = new HashMap<>();
-        data.put("logo", vTeam.getLogo());
+        data.put("logo", getWorkingLogo(vTeam.getTeamId(), vTeam.getLogo()));
         data.put("fullName", vTeam.getFullName());
         data.put("shortName", vTeam.getShortName());
         return data;
+    }
+
+    private static String getWorkingLogo(final String teamId, final String logoUrl) {
+        if (TEAMS_WITH_BROKEN_LOGOS_TO_LOGOS.containsKey(teamId)) {
+            return TEAMS_WITH_BROKEN_LOGOS_TO_LOGOS.get(teamId);
+        }
+        return logoUrl;
     }
 
 }
